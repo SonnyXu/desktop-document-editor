@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <style>
+    html, body {
+      padding:0;
+      margin:0;
+    }
+
+    body {
+      overflow: hidden;
+      background-color: #FFF;
+      font-family: Roboto, sans-serif;
+    }
+
+    .DraftEditor-root, .DraftEditor-editorContainer, div[contenteditable] {
+      height: 100%;
+    }
+
+    .draft-editor-container {
+      height: calc(100vh - 105px);
+      overflow: auto;
+      borderTop: solid 1px #ccc;
+      padding: 5px;
+    }
+
+    .title {
+      text-align: center;
+    }
+
+    .text-align-left {
+      text-align: left;
+    }
+
+    .text-align-right {
+      text-align: right;
+    }
+
+    .text-align-center {
+      text-align: center;
+    }
+    </style>
+    <div id="App"></div>
+  </body>
+  <script type="text/jsx">
+    import React from 'react'
+    import ReactDOM from 'react-dom'
+    import App from './components/App.js'
+
+    ReactDOM.render(<App/>, document.getElementById('App'));
+  </script>
+</html>

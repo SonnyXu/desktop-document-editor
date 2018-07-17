@@ -22,6 +22,10 @@ var mongoose = require('mongoose')
 mongoose.connection.on('connected', function() {
     console.log('Connected to MongoDB!')
 })
+
+mongoose.connection.on('error', function(err) {
+    console.log(err)
+})
 mongoose.connect(process.env.MONGODB_URI)
 
 
@@ -80,9 +84,8 @@ app.use(passport.session())
 // YOUR ROUTES HERE
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return res.status(500).end(err.message)}
-
+    if (!user) { return res.status(400).json({error: 'No user found!'})}
+    if (err) {return res.status(500).json({error: err.message})}
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       return res.json({user: user})
