@@ -55,6 +55,7 @@ export default class App extends React.Component {
 
   render() {
     return (<div>
+      <div>
       <button onMouseDown={(e) => this.toggleInlineStyle(e, 'BOLD')}><strong>B</strong></button>
       <button onMouseDown={(e) => this.toggleInlineStyle(e, 'ITALIC')}><i>I</i></button>
       <button onMouseDown={(e) => this.toggleInlineStyle(e, 'UNDERLINE')}><ins>U</ins></button>
@@ -66,7 +67,8 @@ export default class App extends React.Component {
       <button onMouseDown={(e) => this.toggleBlockType(e, 'RIGHTALIGN')}>RightAlign</button>
       <button onMouseDown={(e) => this.toggleBlockType(e, 'unordered-list-item')}>Unordered List</button>
       <button onMouseDown={(e) => this.toggleBlockType(e, 'ordered-list-item')}>Ordered List</button>
-
+      </div>
+      
       <div style={this.state.hasFocus ? styles.editor: styles.unfocus}>
       <Editor
       onFocus={() => this.setState({ hasFocus: true })}
