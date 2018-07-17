@@ -1,6 +1,6 @@
 import React from 'react';
-// import Login from './Login.js';
-// import Register from './Register.js';
+import Login from './Login.js';
+import Register from './Register.js';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import createStyles from 'draft-js-custom-styles'
 
@@ -39,7 +39,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      currentPage: 'Login'
     }
     this.onChange = (editorState) => this.setState({editorState})
     this.onToggleStyle = (style) => (e) => {
@@ -55,10 +56,28 @@ export default class App extends React.Component {
       this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'remoteCursor'))
       e.preventDefault()
     }
+
+    this.register = () => {
+      this.setState({
+        currentPage: "Register"
+      })
+    }
+
+    this.login = () => {
+      this.setState({
+        currentPage: "Login"
+      })
+    }
+
+    this.editor = () => {
+      this.setState({
+        currentPage: "Editor"
+      })
+    }
   }
 
     render() {
-    // if (this.state.currentPage === "Editor") {
+    if (this.state.currentPage === "Editor") {
       return (<div>
         <h2 className="title">Document Editor</h2>
         {FORMAT_BAR.map(({style, label}) => <button onClick={this.onToggleStyle(style)}>{label}</button>)}
@@ -74,19 +93,20 @@ export default class App extends React.Component {
             onChange={this.onChange}
           />
         </div>
-      </div>);
+      </div>)
     }
-    // } else if (this.state.currentPage === "Login") {
-    //   return <Login currentPage={this.state.currentPage}
-    //                   register={() => this.register()}
-    //                   login={() => this.login()}
-    //                  editor={() => this.editor()}
-    //                />
-    // } else if (this.state.currentPage === "Register") {
-    //   return <Register currentPage={this.state.currentPage}
-    //                      register={() => this.register()}
-    //                      login={() => this.login()}
-    //                      editor={() => this.editor()}
-    //                    />
-    // }
+    else if (this.state.currentPage === "Login") {
+      return <Login currentPage={this.state.currentPage}
+                      register={() => this.register()}
+                      login={() => this.login()}
+                     editor={() => this.editor()}
+                   />
+    } else if (this.state.currentPage === "Register") {
+      return <Register currentPage={this.state.currentPage}
+                         register={() => this.register()}
+                         login={() => this.login()}
+                         editor={() => this.editor()}
+                       />
+    }
+}
 }
