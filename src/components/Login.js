@@ -14,7 +14,7 @@ class Login extends React.Component {
     const username = this.state.username
     const password = this.state.password
     if (username && password) {
-      fetch('/login', {
+      fetch('http://localhost:1337/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -25,14 +25,22 @@ class Login extends React.Component {
         })
       })
       .then((res) => {
-        if(res.status === 200) {
-          console.log(res)
+        if (res.status === 200) {
+          return res.json()
         } else {
-          console.log("err");
+          return res.json()
         }
       })
       .then(
-          () => this.props.editor()
+          (resp) => {
+            console.log(resp)
+            if (resp.user) {
+              this.props.editor()
+            } else {
+              alert('Invalid login')
+              this.props.login()
+            }
+          }
         )
         .catch((err) => {
           // network error
@@ -40,7 +48,8 @@ class Login extends React.Component {
           })
 
     } else {
-      () => this.props.login()
+      alert('Username and password must not be empty!')
+      this.props.login()
     }
   }
 
