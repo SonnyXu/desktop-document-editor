@@ -155,9 +155,9 @@ export default class App extends React.Component {
 
   toggleBlockType(e, blockstyle) {
     e.preventDefault();
-    setBlockData (
-      blockData: {rightAlign: false}
-    )
+    // setBlockData (
+    //   blockData: {rightAlign: false}
+    // )
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockstyle));
   }
 
