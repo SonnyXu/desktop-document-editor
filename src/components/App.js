@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './Login.js';
 import Register from './Register.js';
+import Portal from './Portal.js';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import createStyles from 'draft-js-custom-styles'
 
@@ -40,7 +41,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
-      currentPage: 'Login'
+      currentPage: 'Login',
+      userId: ''
     }
     this.onChange = (editorState) => this.setState({editorState})
     this.onToggleStyle = (style) => (e) => {
@@ -74,6 +76,17 @@ export default class App extends React.Component {
         currentPage: "Editor"
       })
     }
+
+    this.portal = () => {
+      this.setState({
+        currentPage: "Portal"
+      })
+    }
+
+    this.userId = (id) => {
+      this.setState({userId: id})
+      console.log(this.state.userId)
+    }
   }
 
     render() {
@@ -98,13 +111,25 @@ export default class App extends React.Component {
     else if (this.state.currentPage === "Login") {
       return <Login currentPage={this.state.currentPage}
                       register={() => this.register()}
+                      userId={(id) => this.userId(id)}
                       login={() => this.login()}
-                     editor={() => this.editor()}
-                   />
+                      portal={() => this.portal()}
+                      editor={() => this.editor()}
+             />
     } else if (this.state.currentPage === "Register") {
       return <Register currentPage={this.state.currentPage}
                          register={() => this.register()}
                          login={() => this.login()}
+                         portal={() => this.portal()}
+                         editor={() => this.editor()}
+                       />
+    } else if (this.state.currentPage === "Portal") {
+      return <Portal username={this.state.username}
+                         currentPage={this.state.currentPage}
+                         userId={this.state.userId}
+                         register={() => this.register()}
+                         login={() => this.login()}
+                         portal={() => this.portal()}
                          editor={() => this.editor()}
                        />
     }

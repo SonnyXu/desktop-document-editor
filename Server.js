@@ -6,7 +6,8 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('./models/Models.js')
+var User = require('./models/Models.js').User;
+var Document = require('./models/Models.js').Document;
 
 
 // Express setup
@@ -88,7 +89,7 @@ app.post('/login', function(req, res, next) {
     if (err) {return res.status(500).json({error: err.message})}
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.json({user: user})
+      return res.json({userId: user._id})
     });
   })(req, res, next);
 });
@@ -99,6 +100,29 @@ app.post('/register', function(req, res) {
     .save()
     .then((doc) => res.json({id: doc.id}))
     .catch((err) => res.status(500).end(err.message))
+})
+
+app.post('/create', function(req, res) {
+  new Document({
+    createdTime: req.body.createdTime
+    // owner: req.body.userId
+  })
+    .save()
+    .then((doc) => {console.log(doc); return res.json({id: doc._id})})
+    .catch((err) => res.status(500).end(err.message))
+})
+
+app.post('/docList', function(req, res) {
+  User.findById(req.body.userId, function (err, user) {
+    if (err) return console.log('Error');
+    var docList = user.docList.slice()
+    docList.push(req.body.docId)
+    user.docList = docList
+    user.save(function (err, updateduser) {
+      if (err) return console.log('Error');
+      res.json(updateduser);
+    });
+  });
 })
 
 

@@ -1,5 +1,15 @@
 import React from 'react';
 
+const styles = {
+  register: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '50px'
+  }
+}
+
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -60,17 +70,18 @@ class Register extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div  style={styles.register}>
+      <h1>Register</h1>
       <div class="username">
-        <label for="username">Username:</label>
+        <label for="username">Username: </label>
         <input type="text" id="username" name="username" onChange={(e) => this.usernameChange(e)}/>
       </div>
-      <div class="password">
-        <label for="password]">Password:</label>
+      <div class="password" style={{marginTop: '15px'}}>
+        <label for="password">Password: </label>
         <input type="password" id="password" name="password" onChange={(e) => this.passwordChange(e)}/>
       </div>
-      <div>
-        <button onClick={() => this.register()}>Register</button>
+      <div style={{marginTop: '15px'}}>
+        <button style={{ marginRight: '10px'}} onClick={() => this.register()}>Register</button>
         <button onClick={() => this.props.login()}>Go to Login</button>
       </div>
     </div>
