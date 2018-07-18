@@ -35,19 +35,20 @@ class Login extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
-          return res.json()
+          return res.json();
         } else {
-          return res.json()
+          return res.json();
         }
       })
       .then(
           (resp) => {
             console.log(resp)
-            if (resp.user) {
-              this.props.editor()
+            if (resp.userId) {
+              this.props.portal();
+              this.props.userId(resp.userId)
             } else {
               alert('Invalid login')
-              this.props.login()
+              this.props.login();
             }
           }
         )
