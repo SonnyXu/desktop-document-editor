@@ -68,6 +68,19 @@ class Portal extends React.Component {
       })
   }
 
+
+  // addDoc(){
+  //   fetch ('http://localhost:1337/docList')
+  //   .then((res)=>res.json())
+  //   .then((data)=>{
+  //     console.log(data)
+  //     if (data)
+  //   })
+  //
+  // }
+
+
+
   render() {
     return <div style={style.portal}>
       <div><h2>My Portal</h2></div>
@@ -78,11 +91,13 @@ class Portal extends React.Component {
       <div style={style.docList}>
         <h4>My document</h4>
         <ul>
+        var thisperson = User.findOne({._id:this.props.userId})
+        thisperson.docList.map((docId)=>(<li><a href = "http://localhost:1337/"+docId>docList[i].title</a></li>))
         </ul>
       </div>
       <div>
         <input type="text" placeholder="paste a doc id here"/>
-        <button onClick={()=>this.add()}> Add Shared Document </button>
+        <button onClick={()=>this.addDoc()}> Add Shared Document </button>
       </div>
     </div>
   }

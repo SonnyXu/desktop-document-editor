@@ -2,6 +2,17 @@
 
 var express = require('express');
 var path = require('path');
+
+import http from 'http'
+import express from 'express'
+import socketIO from 'socket.io'
+import {auth, document} from './socket-api'
+
+
+
+
+
+
 // var logger = require('morgan');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -12,6 +23,8 @@ var Document = require('./models/Models.js').Document;
 
 // Express setup
 var app = express();
+const server = http.Server(app);
+const io = socketIO(server);
 // app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -105,7 +118,7 @@ app.post('/register', function(req, res) {
 app.post('/create', function(req, res) {
   new Document({
     createdTime: req.body.createdTime
-    // owner: req.body.userId
+    owner: req.body.userId
   })
     .save()
     .then((doc) => {console.log(doc); return res.json({id: doc._id})})
@@ -124,6 +137,12 @@ app.post('/docList', function(req, res) {
     });
   });
 })
+
+
+
+
+
+
 
 
 
