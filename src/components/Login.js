@@ -1,5 +1,14 @@
 import React from 'react';
 
+const styles = {
+  login: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '50px'
+  }
+}
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -66,17 +75,18 @@ class Login extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div style={styles.login}>
+      <h1>Login</h1>
       <div class="username">
-        <label for="username">Username:</label>
+        <label for="username">Username: </label>
         <input type="text" id="username" name="username" onChange={(e) => this.usernameChange(e)}/>
       </div>
-      <div class="password">
-        <label for="password]">Password:</label>
+      <div style={{marginTop: '15px'}}>
+        <label for="password">Password: </label>
         <input type="password" id="password" name="password" onChange={(e) => this.passwordChange(e)}/>
       </div>
-      <div>
-        <button onClick={() => this.login()}>Login</button>
+      <div style={{marginTop: '15px'}}>
+        <button style={{ marginRight: '10px'}} onClick={() => this.login()}>Login</button>
         <button onClick={() => this.props.register()}>Go to Register</button>
       </div>
     </div>

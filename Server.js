@@ -2,7 +2,6 @@
 
 var express = require('express');
 var path = require('path');
-// var logger = require('morgan');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -11,7 +10,6 @@ var User = require('./models/Models.js')
 
 // Express setup
 var app = express();
-// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,9 +21,6 @@ mongoose.connection.on('connected', function() {
     console.log('Connected to MongoDB!')
 })
 
-mongoose.connection.on('error', function(err) {
-    console.log(err)
-})
 mongoose.connect(process.env.MONGODB_URI)
 
 
