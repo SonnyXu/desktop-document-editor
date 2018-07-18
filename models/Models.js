@@ -32,10 +32,7 @@ var documentSchema = new mongoose.Schema({
     type: String
   },
   collaboratorList: {
-    type: [{
-      type: Object,
-      ref: "User"
-    }],
+    type: Array,
     default: []
   },
   title: {

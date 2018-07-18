@@ -19,9 +19,23 @@ class Login extends React.Component {
     }
   }
 
-  login() {
-    const username = this.state.username
-    const password = this.state.password
+  componentDidMount () {
+    var result = localStorage.getItem('login')
+
+
+    if (result !== "null" && result) {
+      var user = JSON.parse(result)
+      var password = user.password;
+      var username = user.username
+      if (username && password) {
+        this.props.userId(user.userId);
+        return this.login(username, password)
+      }
+    }
+  }
+
+
+  login(username, password) {
     if (username && password) {
       fetch('http://localhost:1337/login', {
         method: 'POST',
@@ -29,8 +43,8 @@ class Login extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username,
-          password
+          username: username,
+          password: password
         })
       })
       .then((res) => {
@@ -40,14 +54,21 @@ class Login extends React.Component {
           return res.json();
         }
       })
+
       .then(
           (resp) => {
             console.log(resp)
             if (resp.userId) {
-              this.props.portal();
+              localStorage.setItem('login', JSON.stringify({
+                  username: username,
+                  password: password,
+                  userId: resp.userId
+                }))
               this.props.userId(resp.userId)
+              this.props.portal()
+
             } else {
-              alert('Invalid login')
+              // alert('Invalid login')
               this.props.login();
             }
           }
@@ -55,8 +76,7 @@ class Login extends React.Component {
         .catch((err) => {
           // network error
           console.log('error', err)
-          })
-
+        })
     } else {
       alert('Username and password must not be empty!')
       this.props.login()
@@ -78,16 +98,16 @@ class Login extends React.Component {
   render() {
     return <div style={styles.login}>
       <h1>Login</h1>
-      <div class="username">
-        <label for="username">Username: </label>
+      <div>
+        <label htmlFor="username">Username: </label>
         <input type="text" id="username" name="username" onChange={(e) => this.usernameChange(e)}/>
       </div>
       <div style={{marginTop: '15px'}}>
-        <label for="password">Password: </label>
+        <label htmlFor="password">Password: </label>
         <input type="password" id="password" name="password" onChange={(e) => this.passwordChange(e)}/>
       </div>
       <div style={{marginTop: '15px'}}>
-        <button style={{ marginRight: '10px'}} onClick={() => this.login()}>Login</button>
+        <button style={{ marginRight: '10px'}} onClick={() => this.login(this.state.username, this.state.password)}>Login</button>
         <button onClick={() => this.props.register()}>Go to Register</button>
       </div>
     </div>
