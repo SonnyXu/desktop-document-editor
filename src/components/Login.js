@@ -22,8 +22,6 @@ class Login extends React.Component {
 
   componentDidMount () {
     var result = localStorage.getItem('login')
-
-
     if (result !== "null" && result) {
       var user = JSON.parse(result)
       var password = user.password;
