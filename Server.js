@@ -244,8 +244,8 @@ app.get('/openDoc/:docId', function(req, res) {
         if (error) {
           res.status(500).end(error.message)
         } else {
-          console.log(doc.content[0].content);
-          res.json({docContent: doc.content[0].content})
+          console.log(doc.content);
+          res.json({docContent: doc.content[doc.content.length - 1].content})
         }
     })
 })

@@ -41,7 +41,7 @@ class Portal extends React.Component {
     fetch('http://localhost:1337/docList/' + this.user.userId, {
         method: 'GET'
       })
-      .then((res)=> {
+      .then((res) => {
         if(res.status === 200) {
           return res.json()
         } else {
@@ -136,7 +136,7 @@ class Portal extends React.Component {
     fetch('http://localhost:1337/openDoc/' + docId, {
         method: 'GET'
       })
-      .then((res)=> {
+      .then((res) => {
         if(res.status === 200) {
           return res.json()
         } else {
@@ -146,7 +146,8 @@ class Portal extends React.Component {
       .then((response) => {
           console.log(response)
           this.props.socket.emit('openDoc', docId);
-          this.setState({editorState: response.docContent, documentId: docId})
+          this.props.docId(docId)
+          this.props.editorStateChange(response.docContent)
           this.props.editor();
       })
       .catch((err) => {
@@ -168,7 +169,7 @@ class Portal extends React.Component {
         <h4 style={style.listHeading}>My documents</h4>
         <ul>
           {this.state.docList.map((doc) => {
-            return <li onClick={() => this.openDoc(doc.docId)}>{doc.title}</li>
+            return <li><a href='#' onClick={() => this.openDoc(doc.docId)}>{doc.title}</a></li>
           })}
         </ul>
       </div>

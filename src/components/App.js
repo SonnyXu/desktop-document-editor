@@ -111,6 +111,11 @@ export default class App extends React.Component {
       console.log(this.state.docId)
     }
 
+    this.editorStateChange = (state) => {
+      this.setState({editorState: state})
+      console.log(this.state.editorState)
+    }
+
 
     this.save = () => {
       fetch('http://localhost:1337/save', {
@@ -211,6 +216,7 @@ export default class App extends React.Component {
                          editor={() => this.editor()}
                          logout={() => this.logout()}
                          socket={socket}
+                         editorStateChange={(state) => this.editorStateChange(state)}
                        />
     }
   }
