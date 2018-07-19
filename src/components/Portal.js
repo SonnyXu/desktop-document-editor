@@ -1,4 +1,5 @@
 import React from 'react';
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 
 
 const style = {
@@ -146,8 +147,11 @@ class Portal extends React.Component {
       .then((response) => {
           console.log(response)
           this.props.socket.emit('openDoc', docId);
+
+          const editorState = EditorState.createWithContent(convertFromRaw(response.docContent))
+          this.props.editorStateChange(editorState);
           this.props.docId(docId)
-          this.props.editorStateChange(response.docContent)
+          this.setState({editorState: response.docContent, documentId: docId})
           this.props.editor();
       })
       .catch((err) => {
@@ -169,7 +173,7 @@ class Portal extends React.Component {
         <h4 style={style.listHeading}>My documents</h4>
         <ul>
           {this.state.docList.map((doc) => {
-            return <li><a href='#' onClick={() => this.openDoc(doc.docId)}>{doc.title}</a></li>
+            return <li onClick={() => this.openDoc(doc.docId)}><a href="#">{doc.title}</a></li>
           })}
         </ul>
       </div>
