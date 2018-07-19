@@ -8,7 +8,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/Models.js').User;
 var Document = require('./models/Models.js').Document;
-
+var EditorState = require('draft-js').EditorState;
+var convertToRaw = require('draft-js').convertToRaw;
 // Express setup
 var app = express();
 // app.use(logger('dev'));
@@ -246,8 +247,8 @@ app.get('/openDoc/:docId', function(req, res) {
         if (error) {
           res.status(500).end(error.message)
         } else {
-          console.log(doc.content[0].content);
-          res.json({docContent: doc.content[0].content})
+          console.log(doc.content[doc.content.length - 1].content);
+          res.json({docContent:doc.content[doc.content.length - 1].content})
         }
     })
 })

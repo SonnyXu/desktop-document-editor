@@ -100,6 +100,12 @@ export default class App extends React.Component {
       })
     }
 
+    this.editorStateChange = (editorState) => {
+      this.setState({
+        editorState: editorState
+      })
+    }
+
 
     this.userId = (id) => {
       this.setState({userId: id})
@@ -121,7 +127,7 @@ export default class App extends React.Component {
         body: JSON.stringify({
           docId: this.state.docId,
           content: {
-            content: this.state.editorState,
+            content: convertToRaw(this.state.editorState.getCurrentContent()),
             user: this.state.userId
           },
           lastEditTime: new Date()
@@ -211,6 +217,7 @@ export default class App extends React.Component {
                          editor={() => this.editor()}
                          logout={() => this.logout()}
                          socket={socket}
+                         editorStateChange={(change) => this.editorStateChange(change)}
                        />
     }
   }
