@@ -151,7 +151,6 @@ class Portal extends React.Component {
           const editorState = EditorState.createWithContent(convertFromRaw(response.docContent))
           this.props.editorStateChange(editorState);
           this.props.docId(docId)
-          this.setState({editorState: response.docContent, documentId: docId})
           this.props.editor();
       })
       .catch((err) => {

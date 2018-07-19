@@ -42,14 +42,6 @@ io.on('connection', function(socket) {
     socket.to(docsOpened[socket.id]).emit('contentState', cs);
   })
 
-  // socket.on('selectionState', function(ss) {
-  //   socket.to(docsOpened[socket.id]).emit('selectionState', ss);
-  // })
-
-  // socket.on('newState', function(ns) {
-  //   console.log('new state: ', ns);
-  //   socket.to(docsOpened[socket.id]).emit('newState', ns);
-  // });
 })
 
 
