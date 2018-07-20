@@ -79,22 +79,23 @@ class Portal extends React.Component {
           console.log(resp)
           if (resp.id) {
             this.props.editor();
-            fetch('http://localhost:1337/docList', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                userId: this.user.userId,
-                docId: resp.id,
-                title: resp.title
-              })
-            }).then(res => res.json())
-            .then(
-             (response) => {
-               this.props.docId(resp.id)
-               this.props.editor();
-             })
+            this.props.docId(resp.id)
+            // fetch('http://localhost:1337/docList', {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json'
+            //   },
+            //   body: JSON.stringify({
+            //     userId: this.user.userId,
+            //     docId: resp.id,
+            //     title: resp.title
+            //   })
+            // }).then(res => res.json())
+            // .then(
+            //  (response) => {
+            //    this.props.docId(resp.id)
+            //    this.props.editor();
+            //  })
           } else {
             console.log("Error: Document ID not exist")
           }

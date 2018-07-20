@@ -88,6 +88,26 @@ export default class App extends React.Component {
 
     this.portal = () => {
       socket.emit('closeDoc');
+      if (this.state.currentPage === "Editor") {
+
+
+        fetch('http://localhost:1337/deleteNotSave', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            docId: this.state.docId,
+          })
+        }).then(res => res.json())
+        .then(
+          (resp) => console.log('deleted', resp)
+        )
+        .catch(err => console.log('error', err))
+      }
+
+
+
       this.setState({
         currentPage: "Portal"
       })
@@ -125,6 +145,7 @@ export default class App extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          userId: this.state.userId,
           docId: this.state.docId,
           content: {
             content: convertToRaw(this.state.editorState.getCurrentContent()),
