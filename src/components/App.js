@@ -153,19 +153,14 @@ export default class App extends React.Component {
       })
     })
 
-    socket.on('stateChange', (obj) => {
-      // console.log("Received selectionState:", ss);
-      let newEditorState = EditorState.acceptSelection(
-        convertFromRaw(obj.es),
-        obj.ss
-      );
-      newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection());
-      this.setState({
-        editorState: newEditorState
-      })
-    })
-    
-
+    // socket.on('selectionState', (ss) => {
+    //   console.log("Received selectionState:", ss);
+    //   const editorState = EditorState.acceptSelection(editorState, convertFromRaw(ss));
+    //
+    //   this.setState({
+    //     editorState: editorState
+    //   })
+    // })
   }
 
     render() {

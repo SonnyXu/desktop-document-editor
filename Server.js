@@ -46,11 +46,11 @@ io.on('connection', function(socket) {
   //   console.log("Received state:", ss)
   //   socket.to(docsOpened[socket.id]).emit('selectionState', ss);
   // })
-
-  socket.on('stateChange', function(obj) {
-    socket.to(docsOpened[socket.id]).emit('stateChange', {es: obj.es, ss: obj.ss});
-  })
-
+  //
+  // socket.on('newState', function(ns) {
+  //   console.log('new state: ', ns);
+  //   socket.to(docsOpened[socket.id]).emit('newState', ns);
+  // });
 })
 
 
