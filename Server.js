@@ -42,6 +42,15 @@ io.on('connection', function(socket) {
     socket.to(docsOpened[socket.id]).emit('contentState', cs);
   })
 
+  // socket.on('selectionState', function(ss) {
+  //   console.log("Received state:", ss)
+  //   socket.to(docsOpened[socket.id]).emit('selectionState', ss);
+  // })
+
+  socket.on('stateChange', function(obj) {
+    socket.to(docsOpened[socket.id]).emit('stateChange', {es: obj.es, ss: obj.ss});
+  })
+
 })
 
 

@@ -52,7 +52,8 @@ export default class App extends React.Component {
     this.onChange = (editorState) => {
       this.setState({editorState})
       socket.emit('contentState', convertToRaw(editorState.getCurrentContent()));
-      // socket.emit('selectionState', convertToRaw(editorState.getSelection()));
+      // socket.emit('selectionState', convertToRaw(editorState));
+      socket.emit('stateChange', {es: convertToRaw(editorState), ss: editorState.getSelection()})
     }
     this.onToggleStyle = (style) => (e) => {
       const toggleFn = isBlockStyle(style) ? RichUtils.toggleBlockType : RichUtils.toggleInlineStyle
@@ -151,15 +152,20 @@ export default class App extends React.Component {
         editorState: editorState
       })
     })
-    //
-    // socket.on('selectionState', (ss) => {
-    //   console.log("Received selectionState:", ss);
-    //   const editorState = EditorState.acceptSelection(editorState, convertFromRaw(ss));
-    //
-    //   this.setState({
-    //     editorState: editorState
-    //   })
-    // })
+
+    socket.on('stateChange', (obj) => {
+      // console.log("Received selectionState:", ss);
+      let newEditorState = EditorState.acceptSelection(
+        convertFromRaw(obj.es),
+        obj.ss
+      );
+      newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection());
+      this.setState({
+        editorState: newEditorState
+      })
+    })
+    
+
   }
 
     render() {
