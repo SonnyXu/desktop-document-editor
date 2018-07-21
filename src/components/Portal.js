@@ -42,7 +42,7 @@ class Portal extends React.Component {
     fetch('http://localhost:1337/docList/' + this.user.userId, {
         method: 'GET'
       })
-      .then((res) => {
+      .then((res)=> {
         if(res.status === 200) {
           return res.json()
         } else {
@@ -138,7 +138,7 @@ class Portal extends React.Component {
     fetch('http://localhost:1337/openDoc/' + docId, {
         method: 'GET'
       })
-      .then((res) => {
+      .then((res)=> {
         if(res.status === 200) {
           return res.json()
         } else {
@@ -152,6 +152,7 @@ class Portal extends React.Component {
           const editorState = EditorState.createWithContent(convertFromRaw(response.docContent))
           this.props.editorStateChange(editorState);
           this.props.docId(docId)
+          this.setState({editorState: response.docContent, documentId: docId})
           this.props.editor();
       })
       .catch((err) => {

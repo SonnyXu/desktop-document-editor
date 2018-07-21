@@ -2,6 +2,7 @@
 
 var express = require('express');
 var path = require('path');
+// var logger = require('morgan');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -11,6 +12,7 @@ var EditorState = require('draft-js').EditorState;
 var convertToRaw = require('draft-js').convertToRaw;
 // Express setup
 var app = express();
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -43,10 +45,9 @@ io.on('connection', function(socket) {
   })
 
   // socket.on('selectionState', function(ss) {
-  //   console.log("Received state:", ss)
   //   socket.to(docsOpened[socket.id]).emit('selectionState', ss);
   // })
-  //
+
   // socket.on('newState', function(ns) {
   //   console.log('new state: ', ns);
   //   socket.to(docsOpened[socket.id]).emit('newState', ns);

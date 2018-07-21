@@ -140,11 +140,6 @@ export default class App extends React.Component {
       console.log(this.state.docId)
     }
 
-    this.editorStateChange = (state) => {
-      this.setState({editorState: state})
-      console.log(this.state.editorState)
-    }
-
 
     this.save = () => {
       fetch('http://localhost:1337/save', {
@@ -186,7 +181,7 @@ export default class App extends React.Component {
       })
       this.onSetStyle('color', 'red')
     })
-
+    //
     // socket.on('selectionState', (ss) => {
     //   console.log("Received selectionState:", ss);
     //   const editorState = EditorState.acceptSelection(editorState, convertFromRaw(ss));
