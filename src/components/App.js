@@ -51,9 +51,11 @@ export default class App extends React.Component {
     }
     this.onChange = (editorState) => {
       this.setState({editorState})
-      socket.emit('contentState', convertToRaw(editorState.getCurrentContent()));
-      // socket.emit('selectionState', convertToRaw(editorState));
-      socket.emit('stateChange', {es: convertToRaw(editorState), ss: editorState.getSelection()})
+      socket.emit('contentState', {content: convertToRaw(editorState.getCurrentContent()), selection: editorState.getSelection()});
+      // console.log("Content: ", editorState.getCurrentContent());
+      // console.log("selection: ",editorState.getSelection());
+      //console.log(editorState.getSelection())
+      //socket.emit('selectionState', editorState.getSelection());
     }
     this.onToggleStyle = (style) => (e) => {
       const toggleFn = isBlockStyle(style) ? RichUtils.toggleBlockType : RichUtils.toggleInlineStyle
@@ -89,6 +91,26 @@ export default class App extends React.Component {
 
     this.portal = () => {
       socket.emit('closeDoc');
+      if (this.state.currentPage === "Editor") {
+
+
+        fetch('http://localhost:1337/deleteNotSave', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            docId: this.state.docId,
+          })
+        }).then(res => res.json())
+        .then(
+          (resp) => console.log('deleted', resp)
+        )
+        .catch(err => console.log('error', err))
+      }
+
+
+
       this.setState({
         currentPage: "Portal"
       })
@@ -131,6 +153,7 @@ export default class App extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          userId: this.state.userId,
           docId: this.state.docId,
           content: {
             content: convertToRaw(this.state.editorState.getCurrentContent()),
@@ -146,11 +169,22 @@ export default class App extends React.Component {
     }
 
     socket.on('contentState', (cs) => {
-      console.log("Received contentState:", cs);
-      const editorState = EditorState.createWithContent(convertFromRaw(cs));
+      // console.log("Received contentState:", cs);
+      var editorState = EditorState.createWithContent(convertFromRaw(cs.content));
+      // var selection = editorState.getSelection();
+      // selection.anchorOffset = cs.selection.anchorOffset;
+      // selection.focusOffset = cs.selection.focusOffset;
+      // static acceptSelection(
+      //   editorState: editorState,
+      //   selectionState: cs.selection
+      // ): editorState
+      // editorState = EditorState.setInlineStyleOverride(editorState, "BOLD");
+      //var editorState = EditorState.forceSelection(editorState, cs.selection);
+      console.log(editorState);
       this.setState({
         editorState: editorState
       })
+      this.onSetStyle('color', 'red')
     })
 
     // socket.on('selectionState', (ss) => {
@@ -185,46 +219,45 @@ export default class App extends React.Component {
         <button onClick={this.mark}>mark</button>
         </div>
         <div className="draft-editor-container">
-          <Editor
-            editorState={this.state.editorState}
-            customStyleMap={customStyleMap}
-            customStyleFn={customStyleFn}
-            blockStyleFn={getBlockStyle}
-            onChange={this.onChange}
-            socket={socket}
+          <Editor editorState={this.state.editorState}
+                  customStyleMap={customStyleMap}
+                  customStyleFn={customStyleFn}
+                  blockStyleFn={getBlockStyle}
+                  onChange={this.onChange}
+                  socket={socket}
           />
         </div>
       </div>)
     }
     else if (this.state.currentPage === "Login") {
       return <Login currentPage={this.state.currentPage}
-                      register={() => this.register()}
-                      userId={(id) => this.userId(id)}
-                      login={() => this.login()}
-                      portal={() => this.portal()}
-                      editor={() => this.editor()}
+                    register={() => this.register()}
+                    userId={(id) => this.userId(id)}
+                    login={() => this.login()}
+                    portal={() => this.portal()}
+                    editor={() => this.editor()}
              />
     } else if (this.state.currentPage === "Register") {
       return <Register currentPage={this.state.currentPage}
-                         register={() => this.register()}
-                         login={() => this.login()}
-                         portal={() => this.portal()}
-                         editor={() => this.editor()}
-                       />
+                       register={() => this.register()}
+                       login={() => this.login()}
+                       portal={() => this.portal()}
+                       editor={() => this.editor()}
+              />
     } else if (this.state.currentPage === "Portal") {
       return <Portal username={this.state.username}
-                         documentId={this.state.docId}
-                         editorState={this.state.editorState}
-                         currentPage={this.state.currentPage}
-                         docId={(id) => this.docId(id)}
-                         register={() => this.register()}
-                         login={() => this.login()}
-                         portal={() => this.portal()}
-                         editor={() => this.editor()}
-                         logout={() => this.logout()}
-                         socket={socket}
-                         editorStateChange={(change) => this.editorStateChange(change)}
-                       />
+                     documentId={this.state.docId}
+                     editorState={this.state.editorState}
+                     currentPage={this.state.currentPage}
+                     docId={(id) => this.docId(id)}
+                     register={() => this.register()}
+                     login={() => this.login()}
+                     portal={() => this.portal()}
+                     editor={() => this.editor()}
+                     logout={() => this.logout()}
+                     socket={socket}
+                     editorStateChange={(change) => this.editorStateChange(change)}
+              />
     }
   }
 }

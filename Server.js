@@ -165,6 +165,18 @@ app.post('/docList', function(req, res) {
   });
 })
 
+app.post('/deleteNotSave', function(req, res) {
+  Document.findById(req.body.docId, function (err, doc) {
+    if (err) return console.log('Error', err);
+    if (doc.content.length !== 0) {
+      return;
+    }
+    Document.remove({_id: req.body.docId}, function(err) {
+      console.log("Error: ", err)
+    })
+  });
+})
+
 app.post('/save', function(req, res) {
   Document.findById(req.body.docId, function(err, doc) {
     if (err) return console.log('Error', err)
@@ -173,7 +185,21 @@ app.post('/save', function(req, res) {
     doc.content.push(newContent);
     doc.save(function(err, updateddoc) {
       if (err) return console.log('Error')
-      res.json(updateddoc)
+      User.findById(req.body.userId, function(err, user) {
+        if (err) return console.log('Error', err)
+        var docList = {docId: doc._id, title: doc.title};
+        for (var i = 0; i < user.docList.length; i++) {
+          console.log(""+user.docList[i].docId+"" , req.body.docId,""+user.docList[i].docId+"" === req.body.docId)
+          if (""+user.docList[i].docId+"" === req.body.docId) {
+            return;
+          }
+        }
+        user.docList.push(docList);
+        user.save(function(err, updateduser) {
+          if (err) return console.log('Error')
+          res.json(updateduser)
+        })
+      })
     })
   })
 })
@@ -215,18 +241,7 @@ app.post('/addDoc', function(req, res) {
   });
 })
 
-app.get('/docList/:userId', function(req, res) {
-  console.log(req.params.userId)
-    User.findById(req.params.userId, function(error, user) {
-        if (error) {
-            res.status(500).end(error.message)
-        } else {
-          console.log(user);
-            res.json({docList: user.docList})
-            console.log({docList: user.docList})
-        }
-    })
-})
+
 
 app.get('/docList/:userId', function(req, res) {
   console.log(req.params.userId)
