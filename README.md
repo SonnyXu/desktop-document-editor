@@ -1,4 +1,4 @@
-# google-doc
+# desktop-document-editor
 
 What are we building?
 
